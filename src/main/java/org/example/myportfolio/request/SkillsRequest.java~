@@ -1,0 +1,10 @@
+package org.example.myportfolio.request;
+import lombok.Data;
+import org.example.myportfolio.model.Level;
+
+@Data
+public class SkillsRequest {
+    private String name;
+    private Level level;
+
+}

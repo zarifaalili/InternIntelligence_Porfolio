@@ -1,0 +1,4 @@
+package org.example.myportfolio.response;
+
+public class SkillsResponse {
+}
