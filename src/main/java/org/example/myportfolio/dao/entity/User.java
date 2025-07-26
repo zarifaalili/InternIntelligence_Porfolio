@@ -2,6 +2,7 @@ package org.example.myportfolio.dao.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.example.myportfolio.model.Role;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -21,8 +22,8 @@ public class User {
 
     private String password;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    private Set<String> roles = new HashSet<>();
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
 }
 

@@ -22,15 +22,17 @@ public class CustomUserDetailsService implements UserDetailsService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
 
-        List<SimpleGrantedAuthority> authorities = user.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority(role))
-                .toList();
+        GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + user.getRole().name());
+
+//        List<SimpleGrantedAuthority> authorities = user.getRole().stream()
+//                .map(role -> new SimpleGrantedAuthority(role))
+//                .toList();
 
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getEmail())
-                .password(user.getPassword()) // sənin entity-də password field adı "password"dur
-                .authorities(authorities)
-                .disabled(false)  // aktivlik yoxdursa əlavə logic əlavə et
+                .password(user.getPassword())
+                .authorities(List.of(authority))
+                .disabled(false)
                 .build();
     }
 }

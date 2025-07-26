@@ -80,7 +80,7 @@ public class UserService {
         var user = userMapper.toEntity(userRegisterRequest);
         user.setEmail(email);
         user.setPassword(passwordEncoder.encode(userRegisterRequest.getPassword()));
-        user.setRoles(Set.of("USER"));
+        user.setRole(Role.USER);
 
         var savedUser = userRepository.save(user);
 
