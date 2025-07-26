@@ -1,4 +1,4 @@
-package org.example.myportfolio.entity;
+package org.example.myportfolio.dao.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
