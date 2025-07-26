@@ -2,6 +2,7 @@ package org.example.myportfolio.mapper;
 
 import org.example.myportfolio.dao.entity.Education;
 import org.example.myportfolio.request.EducationRequest;
+import org.example.myportfolio.request.EducationUpdateRequest;
 import org.example.myportfolio.response.EducationResponse;
 import org.mapstruct.Mapper;
 
@@ -9,7 +10,7 @@ import org.mapstruct.Mapper;
 public interface EducationMapper {
 
     Education toEntity(EducationRequest educationRequest);
-
+    Education toEntity(EducationUpdateRequest educationResponse);
 
     EducationResponse toResponse(Education education);
 }
