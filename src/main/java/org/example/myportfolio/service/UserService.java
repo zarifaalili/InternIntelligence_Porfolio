@@ -10,12 +10,16 @@ import org.example.myportfolio.model.Role;
 import org.example.myportfolio.request.UserRegisterRequest;
 import org.example.myportfolio.request.UserRequest;
 import org.example.myportfolio.response.AuthResponse;
+import org.example.myportfolio.response.UserResponse;
 import org.example.myportfolio.util.JwtUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -94,10 +98,38 @@ public class UserService {
 
     }
 
+    public List<UserResponse> getAllUsers() {
+        log.info("Actionlog.getAllUsers.start : ");
+        var users = userRepository.findAll();
+        log.info("Actionlog.getAllUsers.end : ");
+        return userMapper.toResponseList(users);
+    }
+
+    public UserResponse update(String username) {
+        log.info("Actionlog.update.start : ");
+        var userId = getCurrentUserId();
+        var user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        var existsUsername = userRepository.findByUsername(username);
+        if (existsUsername.isPresent() || username == null) {
+            throw new RuntimeException("Username already exists or is null");
+        }
+
+        user.setUsername(username);
+        var savedUser = userRepository.save(user);
+        log.info("Actionlog.update.end : ");
+        return userMapper.toResponse(savedUser);
+
+    }
 
     private String generateOtp() {
         Random random = new Random();
         int otp = 100000 + random.nextInt(900000);
         return String.valueOf(otp);
+    }
+
+
+    private Long getCurrentUserId() {
+        return (Long) ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+                .getRequest().getAttribute("userId");
     }
 }

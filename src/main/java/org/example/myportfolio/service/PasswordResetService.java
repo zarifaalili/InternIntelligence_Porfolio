@@ -51,7 +51,7 @@ public class PasswordResetService {
             throw new RuntimeException("Parollar uyğun deyil");
         }
 
-        user.setPassword(encoder.encode(newPassword)); // burda password setter istifadə et
+        user.setPassword(encoder.encode(newPassword));
         userRepo.save(user);
 
         codeRepo.deleteByEmail(email);

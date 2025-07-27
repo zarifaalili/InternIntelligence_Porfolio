@@ -1,0 +1,28 @@
+package org.example.myportfolio.controller;
+
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.example.myportfolio.request.ProjectRequest;
+import org.example.myportfolio.response.ProjectResponse;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.swing.plaf.PanelUI;
+
+@RestController
+@RequestMapping("/v1/project")
+@RequiredArgsConstructor
+public class ProjectController {
+    private final ProjectService projectService;
+
+
+    @PostMapping("/create")
+    @PreAuthorize("hasRole('USER')")
+    public ProjectResponse createProject(@RequestBody @Valid ProjectRequest projectRequest) {
+        return projectService.createProject(projectRequest);
+    }
+}
