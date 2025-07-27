@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface ExperienceRepository extends JpaRepository<Experience, Long> {
     Optional<Experience> findByCompanyAndPositionAndStartDateAndEndDate(String company, String position, LocalDate startDate, LocalDate endDate);
     List<Experience> findAllByUserId(Long userId);
+    void deleteAllByUserId(Long userId);
 }

@@ -9,5 +9,6 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
    boolean findByTitle(String title);
 
    List<Project> findAllByUserId(Long userId);
+   void deleteAllByUserId(Long userId);
 
 }

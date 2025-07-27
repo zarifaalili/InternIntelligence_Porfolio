@@ -3,7 +3,7 @@ package org.example.myportfolio.service;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.myportfolio.dao.entity.User;
-import org.example.myportfolio.dao.repository.UserRepository;
+import org.example.myportfolio.dao.repository.*;
 import org.example.myportfolio.mapper.UserMapper;
 
 import org.example.myportfolio.model.Role;
@@ -14,6 +14,7 @@ import org.example.myportfolio.response.UserResponse;
 import org.example.myportfolio.util.JwtUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -35,6 +36,10 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
     private final JwtUtil jwtUtil;
+    private final SkillsRepository  skillsRepository;
+    private final ProjectRepository projectRepository;
+    private final EducationRepository educationRepository;
+    private final ExperienceRepository experienceRepository;
 
 
     private final ConcurrentMap<String, String> otpStore = new ConcurrentHashMap<>();
@@ -119,6 +124,27 @@ public class UserService {
         log.info("Actionlog.update.end : ");
         return userMapper.toResponse(savedUser);
 
+    }
+
+    public UserResponse getUser(String username) {
+        log.info("Actionlog.get.start : ");
+        var user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+        log.info("Actionlog.get.end : ");
+        return userMapper.toResponse(user);
+    }
+
+
+    @Transactional
+    public void deleteUser(){
+        log.info("Actionlog.delete.start : ");
+        var userId = getCurrentUserId();
+        var user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        skillsRepository.deleteAllByUserId(userId);
+        experienceRepository.deleteAllByUserId(userId);
+        educationRepository.deleteAllByUserId(userId);
+        projectRepository.deleteAllByUserId(userId);
+        userRepository.delete(user);
+        log.info("Actionlog.delete.end : ");
     }
 
     private String generateOtp() {

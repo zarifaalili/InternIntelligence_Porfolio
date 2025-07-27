@@ -25,12 +25,12 @@ public class UserController {
 
     @PostMapping("/verify/{email}/{otp}")
     public AuthResponse verifyUser(@PathVariable String email, @PathVariable String otp, @RequestBody UserRequest userRegisterRequest) {
-    return userService.verifyOtp(email, otp, userRegisterRequest);
+        return userService.verifyOtp(email, otp, userRegisterRequest);
     }
 
     @GetMapping("/getAllUsers")
     @PreAuthorize("hasRole('ADMIN')")
-    public List<UserResponse> getAllUsers(){
+    public List<UserResponse> getAllUsers() {
         return userService.getAllUsers();
     }
 
@@ -39,4 +39,17 @@ public class UserController {
     public UserResponse updateUser(@PathVariable String username) {
         return userService.update(username);
     }
+
+    @GetMapping("/getUser/{username}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public UserResponse getUser(@PathVariable String username) {
+        return userService.getUser(username);
+    }
+
+    @DeleteMapping("/deleteUser")
+    @PreAuthorize("hasRole('USER')")
+    public void deleteUser() {
+        userService.deleteUser();
+    }
+
 }

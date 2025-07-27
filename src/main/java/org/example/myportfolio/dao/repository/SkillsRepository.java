@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface SkillsRepository extends JpaRepository<Skills, Long> {
     Optional<Skills> findByName(String name);
     List<Skills> findAllByUserId(Long userId);
+    void deleteAllByUserId(Long userId);
 }

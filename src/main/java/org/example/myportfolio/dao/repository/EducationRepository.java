@@ -9,4 +9,5 @@ import java.util.List;
 public interface EducationRepository extends JpaRepository<Education, Long> {
     boolean existsByInstitutionAndFieldOfStudyAndStartDate(String institution, String fieldOfStudy, LocalDate startDate);
     List<Education> findAllByUserId(Long userId);
+    void deleteAllByUserId(Long userId);
 }
